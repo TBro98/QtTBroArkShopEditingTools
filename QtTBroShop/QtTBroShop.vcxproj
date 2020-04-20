@@ -109,7 +109,6 @@
     <QtRcc Include="QtTBroShop.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="json.hpp" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="yjsd.h" />
   </ItemGroup>
