@@ -137,8 +137,12 @@ void QtTBroShop::savegeneralconfig()
 	mysql["MysqlHost"] = "localhost";
 	mysql["MysqlUser"] = "apitest";
 	mysql["MysqlPass"] = "12345";
-	mysql["MysqlDB"] = "apitest";
-	savejson["Mysql"] = mysql;
+	mysql["MysqlDB"] = "apitest"; 
+	auto vipShop_map = loadjson["vipShopItems"];
+	if (vipShop_map.empty())
+		savejson["Mysql"] = mysql;
+	else
+		savejson["Mysql"] = loadjson["Mysql"];
 	savejson["General"]["tbro"] = ui.tbro->toPlainText().toInt();
 	savejson["General"]["tbrokami"] = ui.tbrokami->toPlainText().toInt();
 	savejson["General"]["tbroserver"] = ui.tbroserver->isChecked();
