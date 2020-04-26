@@ -95,6 +95,7 @@
     <ClCompile Include="Servers.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="Suicide.cpp" />
+    <ClCompile Include="TBroCrossChat.cpp" />
     <ClCompile Include="vipShop.cpp" />
     <ClCompile Include="yjsd.cpp" />
   </ItemGroup>

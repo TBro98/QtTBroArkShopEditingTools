@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>330</y>
+       <y>390</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -543,7 +543,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>390</y>
+       <y>450</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -565,7 +565,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>270</y>
+       <y>330</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -645,7 +645,7 @@ p, li { white-space: pre-wrap; }
       <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;设置跨服需要安装跨服插件-RconCrossServerChat&lt;/p&gt;&lt;p&gt;目录与开服器内地图设置的路径一样，列：D:/server/server1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;跨服插件-RconCrossServerChat1.7&lt;/p&gt;&lt;p&gt;目录与开服器内地图设置的路径一样，列：D:/server/server1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -680,7 +680,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>210</y>
+       <y>270</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -7865,7 +7865,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>控制台指令</string>
+     <string>命令</string>
     </attribute>
     <widget class="QPushButton" name="AddPoints">
      <property name="geometry">
@@ -8158,6 +8158,110 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;如果卖的是vip3，则输入：kami vip vip3	导入目录下vip3.txt&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;如果卖的是A001卡密包，则输入：kami kits A001	导入目录下A001.txt&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_6">
+    <attribute name="title">
+     <string>跨服设置</string>
+    </attribute>
+    <widget class="QTableWidget" name="SocketCrosstableWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>1321</width>
+       <height>351</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>楷体</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>170</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>170</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>服务器目录</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>楷体</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>地图名称</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>楷体</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>使用端口</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>楷体</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+    </widget>
+    <widget class="QPushButton" name="addserver_2">
+     <property name="geometry">
+      <rect>
+       <x>1320</x>
+       <y>40</y>
+       <width>171</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>楷体</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>添加服务器目录</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="removeserver_2">
+     <property name="geometry">
+      <rect>
+       <x>1320</x>
+       <y>100</y>
+       <width>171</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>楷体</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>减少服务器目录</string>
      </property>
     </widget>
    </widget>

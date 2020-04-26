@@ -2,25 +2,17 @@
 void QtTBroShop::Serversdef()
 {
 	ui.serverstableWidget->setColumnWidth(0, 880);
-	nlohmann::json tbroload;
-	QString saveconfigpath = QDir::currentPath() + "/save.ini";
-	std::wstring tbropath = saveconfigpath.toStdWString();
-	std::fstream tbrofile{ tbropath };
-	if (tbrofile.is_open())
+	
+	for (int i = 0; i < saveiniload["load"].size(); i++)
 	{
-		tbrofile >> tbroload;
-		for (int i = 0; i < tbroload["load"].size(); i++)
+		try {
+			addnewserver(QString::fromStdString(saveiniload["load"][i]["path"]), QString::fromStdString(saveiniload["load"][i]["mapname"]), QString::fromStdString(saveiniload["load"][i]["rconport"]));
+		}
+		catch (std::exception&)
 		{
-			try {
-				addnewserver(QString::fromStdString(tbroload["load"][i]["path"]), QString::fromStdString(tbroload["load"][i]["mapname"]), QString::fromStdString(tbroload["load"][i]["rconport"]));
-			}
-			catch (std::exception &)
-			{
-				addnewserver(QString::fromStdString(tbroload["load"]["path"][i]),"","");
-			}
+			addnewserver(QString::fromStdString(saveiniload["load"]["path"][i]), "", "");
 		}
 	}
-	tbrofile.close();
 
 	int colora = ui.servercolora->value();
 	int colorb = ui.servercolorb->value();
@@ -94,26 +86,6 @@ void QtTBroShop::servercolorchange()
 			const QColor color = QColor(colora, colorb, colorc);
 			item->setBackgroundColor(color);
 		}
-	}
-}
-void QtTBroShop::saveini()
-{
-	nlohmann::json tbrosave;
-	QString saveconfigpath = QDir::currentPath() + "/save.ini";
-	std::wstring tbropath = saveconfigpath.toStdWString();
-	std::ofstream tbrofile{ tbropath };
-	int iRow = ui.serverstableWidget->rowCount();
-	if (tbrofile.is_open())
-	{
-		for (int i = 0; i < iRow; i++)
-		{
-			tbrosave["load"][i]["path"] = ui.serverstableWidget->item(i, 0)->text().toStdString();
-			tbrosave["load"][i]["mapname"] = ui.serverstableWidget->item(i, 1)->text().toStdString();
-			tbrosave["load"][i]["rconport"] = ui.serverstableWidget->item(i, 2)->text().toStdString();
-
-		}
-		tbrofile << tbrosave;
-		tbrofile.close();
 	}
 }
 void QtTBroShop::openyjsd()

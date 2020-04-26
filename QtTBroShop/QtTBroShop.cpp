@@ -21,7 +21,9 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 	kamidef();
 	selldef();
 	Messagedef();
+	SaveiniLoad();
 	Serversdef();
+	CrossChatsdef();
 
 	connect(ui.openbutton, &QPushButton::clicked, this, &QtTBroShop::openfile);
 	connect(ui.savebutton, &QPushButton::clicked, this, &QtTBroShop::savefile);
@@ -39,6 +41,38 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 	connect(ui.yjsdbtn, &QPushButton::clicked, this, &QtTBroShop::openyjsd);
 
 
+}
+void QtTBroShop::SaveiniLoad()
+{
+	QString saveconfigpath = QDir::currentPath() + "/save.ini";
+	std::wstring tbropath = saveconfigpath.toStdWString();
+	std::fstream tbrofile{ tbropath };
+	if (tbrofile.is_open())
+	{
+		tbrofile >> saveiniload;
+	}
+	tbrofile.close();
+}
+
+void QtTBroShop::saveini()
+{
+	nlohmann::json tbrosave;
+	QString saveconfigpath = QDir::currentPath() + "/save.ini";
+	std::wstring tbropath = saveconfigpath.toStdWString();
+	std::ofstream tbrofile{ tbropath };
+	int iRow = ui.serverstableWidget->rowCount();
+	if (tbrofile.is_open())
+	{
+		for (int i = 0; i < iRow; i++)
+		{
+			tbrosave["load"][i]["path"] = ui.serverstableWidget->item(i, 0)->text().toStdString();
+			tbrosave["load"][i]["mapname"] = ui.serverstableWidget->item(i, 1)->text().toStdString();
+			tbrosave["load"][i]["rconport"] = ui.serverstableWidget->item(i, 2)->text().toStdString();
+
+		}
+		tbrofile << tbrosave;
+		tbrofile.close();
+	}
 }
 QString QtTBroShop::read_ip_address()
 {

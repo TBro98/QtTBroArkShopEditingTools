@@ -70,6 +70,9 @@
     <ClCompile Include="Invitation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TBroCrossChat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtTBroShop.h">

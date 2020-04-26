@@ -109,6 +109,7 @@ private:
 
 	nlohmann::json loadjson;
 	nlohmann::json savejson;
+	nlohmann::json saveiniload;
 	//Kits
 
 	QTreeWidgetItem* CreateTopKits(QString id, QString amount, QString price, QString name, bool isdefkit, QString vip);
@@ -139,6 +140,7 @@ private:
 	void servercolorchange();
 	void saveini();
 	void openyjsd();
+	void SaveiniLoad();
 	QString read_ip_address();
 	std::string getblu(std::string blu);
 	void addnewserver(QString path, QString mapname, QString rconport);
@@ -191,4 +193,9 @@ private:
 	void savevipSellconfig();
 	void loadInvitationconfig();
 	void saveInvitationconfig();
+	void CrossChatsdef();
+	void addnewceosschat(QString path, QString mapname, QString rconport);
+	void addcross();
+	void removecross();
+	void savecrossini();
 };
