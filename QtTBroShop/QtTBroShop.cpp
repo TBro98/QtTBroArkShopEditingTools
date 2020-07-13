@@ -12,24 +12,18 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 {
 	ui.setupUi(this);
 	QString filepath=QDir::currentPath() + "/config.json";
+	LoadJson(filepath);
 	ui.SavePath->setText(filepath);
 
 	Generaldef();
 	Kitsdef();
 	Shopdef();
-	vipShopdef();
-	kamidef();
 	selldef();
-	Messagedef();
 	SaveiniLoad();
 	Serversdef();
-	CrossChatsdef();
 
 	connect(ui.openbutton, &QPushButton::clicked, this, &QtTBroShop::openfile);
 	connect(ui.savebutton, &QPushButton::clicked, this, &QtTBroShop::savefile);
-
-	connect(ui.openurlbutton, &QPushButton::clicked, this, &QtTBroShop::openurl);
-	connect(ui.openqqbutton, &QPushButton::clicked, this, &QtTBroShop::openqq);
 
 	connect(ui.tabWidget, &QTabWidget::tabBarClicked, this, &QtTBroShop::clearfilelabel);
 
@@ -38,9 +32,21 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 
 	connect(ui.openserverconfig, &QPushButton::clicked, this, &QtTBroShop::openserverconfig);
 	connect(ui.saveall, &QPushButton::clicked, this, &QtTBroShop::saveall);
-	connect(ui.yjsdbtn, &QPushButton::clicked, this, &QtTBroShop::openyjsd);
 
 
+}
+
+void QtTBroShop::LoadJson(QString filepath)
+{
+	std::wstring jsonpath = filepath.toStdWString();
+	std::fstream jsonfile{ jsonpath };
+	if (jsonfile.is_open())
+	{
+		jsonfile >> loadjson;
+
+		Messagedef();
+	}
+	jsonfile.close();
 }
 void QtTBroShop::SaveiniLoad()
 {
@@ -66,8 +72,6 @@ void QtTBroShop::saveini()
 		for (int i = 0; i < iRow; i++)
 		{
 			tbrosave["load"][i]["path"] = ui.serverstableWidget->item(i, 0)->text().toStdString();
-			tbrosave["load"][i]["mapname"] = ui.serverstableWidget->item(i, 1)->text().toStdString();
-			tbrosave["load"][i]["rconport"] = ui.serverstableWidget->item(i, 2)->text().toStdString();
 
 		}
 		tbrofile << tbrosave;
@@ -102,18 +106,6 @@ std::string QtTBroShop::getblu(std::string blu)
 	return blu;
 }
 
-
-
-
-void QtTBroShop::openurl()
-{
-	QDesktopServices::openUrl(QUrl("https://arkfgf.com/archives/581"));
-}
-
-void QtTBroShop::openqq()
-{
-	QDesktopServices::openUrl(QUrl("https://jq.qq.com/?_wv=1027&k=5zp0syp"));
-}
 void QtTBroShop::clearfilelabel()
 {
 	ui.filelabel->clear();
@@ -126,7 +118,7 @@ void QtTBroShop::openfile()
 	//定义文件对话框类
 	QFileDialog* fileDialog = new QFileDialog(this);
 	//定义文件对话框标题
-	fileDialog->setWindowTitle(QStringLiteral("选中文件"));
+	fileDialog->setWindowTitle(QStringLiteral("Choose config.json"));
 	//设置默认文件路径
 	fileDialog->setDirectory(".");
 	//设置文件过滤器
@@ -152,40 +144,44 @@ void QtTBroShop::openfile()
 		try
 		{
 			file >> loadjson;
-			ui.filelabel->setText(QString::fromLocal8Bit("打开成功"));
+			ui.filelabel->setText("Open Success");
 		}
 		catch(const std::exception&)
 		{
-			ui.filelabel->setText(QString::fromLocal8Bit("!!打开失败!!"));
+			ui.filelabel->setText("!!Open Failed!!");
 			file.close();
 			return;
 		}
 	}
 	else
 	{
-		ui.filelabel->setText(QString::fromLocal8Bit("!!打开失败!!"));
+		ui.filelabel->setText("!!Open Failed!!");
 		file.close();
 		return;
 	}
 	file.close();
+	std::string errorwhere;
 	try
 	{
+		errorwhere = "General";
 		loadgeneralconfig();
+		errorwhere = "Kits";
 		loadkitsconfig();
+		errorwhere = "ShopItems";
 		loadShopconfig();
-		loadvipShopconfig(); 
-		loadkamiconfig();
-		loadSuicideconfig(); 
+		errorwhere = "Chat";
 		loadCommandconfig();
+		errorwhere = "Messages";
 		loadMessageconfig();
-		loadLotteryconfig();
+		errorwhere = "Sell";
 		loadSellItem();
-		loadvipSellItem();
-		loadInvitationconfig();
 	}
 	catch (const std::exception & error)
 	{
-		QMessageBox::information(NULL, QString::fromLocal8Bit("错误"), error.what());
+		ui.filelabel->setText("!!Open Failed!!");
+		std::string errorstr = "Warn from:" + errorwhere;
+		errorstr += error.what();
+		QMessageBox::information(NULL, "Error", QString::fromLocal8Bit(errorstr.c_str()));
 	}
 }
 
@@ -202,24 +198,18 @@ void QtTBroShop::savefile()
 	{
 		savegeneralconfig();
 		savekitsconfig();
-		savekamiconfig();
 		saveShopconfig();
-		savevipShopconfig();
-		saveSuicideconfig();
 		saveCommandconfig();
 		saveMessageconfig();
-		saveLotteryconfig();
 		saveSellconfig();
-		savevipSellconfig();
-		saveInvitationconfig();
 		std::string savestr = savejson.dump(4); 
 		file << savestr;
 		savejson.clear();
-		ui.filelabel->setText(QString::fromLocal8Bit("保存成功!"));
+		ui.filelabel->setText(QString::fromLocal8Bit("Saved!"));
 	}
 	else
 	{
-		ui.filelabel->setText(QString::fromLocal8Bit("保存失败!"));
+		ui.filelabel->setText(QString::fromLocal8Bit("Save Failed!"));
 	}
 	file.close();
 }

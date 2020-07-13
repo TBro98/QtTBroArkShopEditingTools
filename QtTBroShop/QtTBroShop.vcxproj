@@ -84,34 +84,25 @@
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="General.cpp" />
-    <ClCompile Include="Invitation.cpp" />
-    <ClCompile Include="kami.cpp" />
     <ClCompile Include="Kits.cpp" />
-    <ClCompile Include="Lottery.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="QtTBroShop.cpp" />
     <ClCompile Include="Sell.cpp" />
     <ClCompile Include="Servers.cpp" />
     <ClCompile Include="Shop.cpp" />
-    <ClCompile Include="Suicide.cpp" />
-    <ClCompile Include="TBroCrossChat.cpp" />
-    <ClCompile Include="vipShop.cpp" />
-    <ClCompile Include="yjsd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtTBroShop.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtTBroShop.ui" />
-    <QtUic Include="yjsd.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtTBroShop.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <QtMoc Include="yjsd.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TBroShopTool.rc" />

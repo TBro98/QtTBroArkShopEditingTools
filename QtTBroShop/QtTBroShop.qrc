@@ -1,6 +1,6 @@
 <RCC>
-  <qresource prefix="/QtTBroShop">
-    <file>TBro.ico</file>
-    <file>QQ图片20200324210740.png</file>
-  </qresource>
+    <qresource prefix="/QtTBroShop">
+        <file>QQ图片20200324210740.png</file>
+        <file>TBro.ico</file>
+    </qresource>
 </RCC>

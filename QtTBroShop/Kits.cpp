@@ -5,7 +5,28 @@ void QtTBroShop::RemoveKits()
 	int cout = ui.KitstreeWidget->topLevelItemCount();
 	ui.KitstreeWidget->takeTopLevelItem(cout-1);
 }
-QTreeWidgetItem* QtTBroShop::CreateKitsDinos(QString type, QString amount, QString leave, QString bluph, QString healthbase, bool Fixed)
+QTreeWidgetItem* QtTBroShop::CreateKitsDinos(QString type, QString amount, QString leave, QString bluph, QString healthbase, bool Neutered)
+{
+	QTreeWidgetItem* itemitems = new QTreeWidgetItem();
+
+	itemitems->setText(0, type);
+	itemitems->setToolTip(0, QString::fromLocal8Bit("is Dino"));
+	itemitems->setText(1, amount);
+	itemitems->setToolTip(1, QString::fromLocal8Bit("null"));
+	itemitems->setText(2, leave);
+	itemitems->setToolTip(2, QString::fromLocal8Bit("Level"));
+	itemitems->setText(3, bluph);
+	itemitems->setToolTip(3, QString::fromLocal8Bit("Blueprint"));
+
+	if (Neutered)
+		itemitems->setCheckState(5, Qt::CheckState::Checked);
+	else
+		itemitems->setCheckState(5, Qt::CheckState::Unchecked);
+	itemitems->setText(5, QString::fromLocal8Bit("Neutered"));
+	itemitems->setFlags(itemitems->flags() | Qt::ItemIsEditable);
+	return itemitems;
+}
+QTreeWidgetItem* QtTBroShop::CreateKitsItems(QString type, QString amount, QString leave, QString bluph, bool isbluph, bool ForceBlueprint)
 {
 	QTreeWidgetItem* itemitems = new QTreeWidgetItem();
 
@@ -13,51 +34,22 @@ QTreeWidgetItem* QtTBroShop::CreateKitsDinos(QString type, QString amount, QStri
 	itemitems->setText(1, amount);
 	itemitems->setText(2, leave);
 	itemitems->setText(3, bluph);
+	itemitems->setToolTip(0, QString::fromLocal8Bit("is Items"));
+	itemitems->setToolTip(1, QString::fromLocal8Bit("Amount"));
+	itemitems->setToolTip(2, QString::fromLocal8Bit("Quality"));
+	itemitems->setToolTip(3, QString::fromLocal8Bit("Blueprint"));
+	if (ForceBlueprint)
+		itemitems->setCheckState(5, Qt::CheckState::Checked);
+	else
+		itemitems->setCheckState(5, Qt::CheckState::Unchecked);
 
-	if (type == "Dinos")
-	{
-		if(healthbase=="")
-			itemitems->setText(4, QString::fromLocal8Bit("如要固定属性则设置数值"));
-		else
-			itemitems->setText(4, healthbase);
-		itemitems->setText(5, QString::fromLocal8Bit("是否绝育"));
-		if (Fixed)
-			itemitems->setCheckState(5, Qt::CheckState::Checked);
-		else
-			itemitems->setCheckState(5, Qt::CheckState::Unchecked);
-	}
-	itemitems->setFlags(itemitems->flags() | Qt::ItemIsEditable);
-	return itemitems;
-}
-QTreeWidgetItem* QtTBroShop::CreateKitsItems(QString type, QString amount, QString leave, QString bluph, bool isbluph, bool Fixed)
-{
-	QTreeWidgetItem* itemitems = new QTreeWidgetItem();
-
-	itemitems->setText(0, type);
-	itemitems->setText(1, amount);
-	itemitems->setText(2, leave);
-	itemitems->setText(3, bluph);
-	if(type=="Items")
-	{
-		itemitems->setText(4, QString::fromLocal8Bit("是否为图纸"));
-		itemitems->setText(5, QString::fromLocal8Bit("固定属性品质"));
-
-		if (isbluph)
-			itemitems->setCheckState(4, Qt::CheckState::Checked);
-		else
-			itemitems->setCheckState(4, Qt::CheckState::Unchecked);
-
-		if (Fixed)
-			itemitems->setCheckState(5, Qt::CheckState::Checked);
-		else
-			itemitems->setCheckState(5, Qt::CheckState::Unchecked);
-	}
+	itemitems->setText(5, QString::fromLocal8Bit("ForceBlueprint"));
 
 	itemitems->setFlags(itemitems->flags() | Qt::ItemIsEditable);
 	return itemitems;
 }
 
-QTreeWidgetItem* QtTBroShop::CreateTopKits(QString id, QString amount, QString price, QString name, bool isdefkit,QString vip)
+QTreeWidgetItem* QtTBroShop::CreateTopKits(QString id, QString amount, QString price, QString name, bool OnlyFromSpawn,QString vip)
 {
 
 	QTreeWidgetItem* item = new QTreeWidgetItem();
@@ -65,28 +57,30 @@ QTreeWidgetItem* QtTBroShop::CreateTopKits(QString id, QString amount, QString p
 	item->setText(1, amount);
 	item->setText(2, price);
 	item->setText(3, name);
-	if(isdefkit)
+	if(OnlyFromSpawn)
 		item->setCheckState(4, Qt::CheckState::Checked);
 	else
 		item->setCheckState(4, Qt::CheckState::Unchecked);
+
+	item->setText(4, QString::fromLocal8Bit("OnlyFromSpawn"));
 
 	item->setFlags(item->flags() | Qt::ItemIsEditable);
 
 	item->setText(5, vip);
 
-	item->setBackgroundColor(0, QColorConstants::Svg::lightcyan);
-	item->setBackgroundColor(1, QColorConstants::Svg::lightcyan);
-	item->setBackgroundColor(2, QColorConstants::Svg::lightcyan);
-	item->setBackgroundColor(3, QColorConstants::Svg::lightcyan);
-	item->setBackgroundColor(4, QColorConstants::Svg::lightcyan);
-	item->setBackgroundColor(5, QColorConstants::Svg::lightcyan);
+	item->setBackgroundColor(0, QColorConstants::Svg::cyan);
+	item->setBackgroundColor(1, QColorConstants::Svg::cyan);
+	item->setBackgroundColor(2, QColorConstants::Svg::cyan);
+	item->setBackgroundColor(3, QColorConstants::Svg::cyan);
+	item->setBackgroundColor(4, QColorConstants::Svg::cyan);
+	item->setBackgroundColor(5, QColorConstants::Svg::cyan);
 	ui.KitstreeWidget->addTopLevelItem(item);
 	return item;
 }
 
 void QtTBroShop::AddTopKits()
 {
-	CreateTopKits("ID", QString::fromLocal8Bit("数量"), QString::fromLocal8Bit("价格"), QString::fromLocal8Bit("礼包显示名"),false,"")->addChild(CreateKitsItems("Items", "1", "0", QString::fromLocal8Bit("蓝图代码"), false,false));
+	CreateTopKits("ID", "1", "0", "Kit name",false,"")->addChild(CreateKitsItems("Items", "1", "0", "Blueprint", false,false));
 }
 
 void QtTBroShop::Kitsdef()
@@ -94,19 +88,18 @@ void QtTBroShop::Kitsdef()
 	//ui.KitstreeWidget->setColumnCount(5);
 	ui.KitstreeWidget->setColumnWidth(0, 120);
 	ui.KitstreeWidget->setColumnWidth(1, 100);
-	ui.KitstreeWidget->setColumnWidth(2, 120);
-	ui.KitstreeWidget->setColumnWidth(3, 660);
-	ui.KitstreeWidget->setColumnWidth(4, 300);
-	ui.KitstreeWidget->setColumnWidth(5, 130);
+	ui.KitstreeWidget->setColumnWidth(2, 100);
+	ui.KitstreeWidget->setColumnWidth(3, 550);
+	ui.KitstreeWidget->setColumnWidth(4, 180);
+	ui.KitstreeWidget->setColumnWidth(5, 100);
 	//QStringList sListHeader;
 	//sListHeader << QString::fromLocal8Bit("礼包ID/类型") << QString::fromLocal8Bit("礼包数量/物品数量") << QString::fromLocal8Bit("购买价格/品质") << QString::fromLocal8Bit("礼包名/蓝图代码") << QString::fromLocal8Bit("是否只能复活时获取"); 
 	//ui.KitstreeWidget->setHeaderLabels(sListHeader);
 
-	QTreeWidgetItem* item = CreateTopKits("ID", QString::fromLocal8Bit("可领取数量"), QString::fromLocal8Bit("价格"), QString::fromLocal8Bit("礼包显示名"), false, "");
-
-	item->addChild(CreateKitsItems("Items", "1", "0", QString::fromLocal8Bit("蓝图代码"), false,false));
-	item->addChild(CreateKitsDinos("Dinos", "", "225", QString::fromLocal8Bit("蓝图代码"),"",false));
-	item->addChild(CreateKitsItems("Points","1000","","",false,false));
+	QTreeWidgetItem* item = CreateTopKits("ID", "1", "0", "Kit name", false, "");
+	
+	item->addChild(CreateKitsItems("Items", "1", "0", QString::fromLocal8Bit("Blueprint"), false,false));
+	item->addChild(CreateKitsDinos("Dinos", "", "225", QString::fromLocal8Bit("Blueprint"),"0",false));
 
 	ui.KitstreeWidget->addTopLevelItem(item);
 
@@ -129,7 +122,7 @@ void QtTBroShop::sltKitsPopMenu(const QPoint&)
 
 	if (parent)
 	{
-		QAction DelWell(QString::fromLocal8Bit("&删除"), this);
+		QAction DelWell(QString::fromLocal8Bit("&Remove"), this);
 		connect(&DelWell, SIGNAL(triggered()), this, SLOT(KitsDelWell())); 
 		QPoint pos;
 		QMenu menu(ui.KitstreeWidget);
@@ -137,21 +130,18 @@ void QtTBroShop::sltKitsPopMenu(const QPoint&)
 		menu.exec(QCursor::pos());  //在当前鼠标位置显示
 		return;
 	}
-	QAction AdditemsWell(QString::fromLocal8Bit("&新建物品"), this);
-	QAction AdddinosWell(QString::fromLocal8Bit("&新建恐龙"), this);
-	QAction AddpointsWell(QString::fromLocal8Bit("&新建金币"), this);
-	QAction DelWell(QString::fromLocal8Bit("&删除"), this);
+	QAction AdditemsWell(QString::fromLocal8Bit("&Add Items"), this);
+	QAction AdddinosWell(QString::fromLocal8Bit("&Add Dinos"), this);
+	QAction DelWell(QString::fromLocal8Bit("&Remove"), this);
 	//在界面上删除该item
 	connect(&AdditemsWell, SIGNAL(triggered()), this, SLOT(KitsAddItem()));
 	connect(&AdddinosWell, SIGNAL(triggered()), this, SLOT(KitsAddDinos()));
-	connect(&AddpointsWell, SIGNAL(triggered()), this, SLOT(KitsAddPoints()));
 	connect(&DelWell, SIGNAL(triggered()), this, SLOT(KitsDelWell()));
 
 	QPoint pos;
 	QMenu menu(ui.KitstreeWidget);
 	menu.addAction(&AdditemsWell);
 	menu.addAction(&AdddinosWell);
-	menu.addAction(&AddpointsWell);
 	menu.addAction(&DelWell);
 	menu.exec(QCursor::pos());  //在当前鼠标位置显示
 }
@@ -169,30 +159,16 @@ void QtTBroShop::closeallKits()
 void QtTBroShop::KitsAddItem()
 {
 	QTreeWidgetItem* curItem = ui.KitstreeWidget->currentItem();
-	curItem->addChild(CreateKitsItems("Items", "1", "0", QString::fromLocal8Bit("蓝图代码"), false,false));
+	curItem->addChild(CreateKitsItems("Items", "1", "0", QString::fromLocal8Bit("Blueprint"), false,false));
 }
 
 void QtTBroShop::KitsAddDinos()
 {
 	QTreeWidgetItem* curItem = ui.KitstreeWidget->currentItem();
-		curItem->addChild(CreateKitsDinos("Dinos", "", "225", QString::fromLocal8Bit("蓝图代码"), "",false));
-}
-void QtTBroShop::KitsAddPoints()
-{
-	QTreeWidgetItem* curItem = ui.KitstreeWidget->currentItem();
-	curItem->addChild(CreateKitsItems("Points", "1000", "", "", false,false));
+		curItem->addChild(CreateKitsDinos("Dinos", "", "225", QString::fromLocal8Bit("Blueprint"), "",false));
 }
 void QtTBroShop::KitsDelWell()
 {
-	//if (ui.KitstreeWidget->currentItem()->parent() == NULL)
-	//{
-	//	delete ui.KitstreeWidget->takeTopLevelItem(ui.KitstreeWidget->currentIndex().row());
-	//}
-	//else
-	//{
-	//	//如果有父节点就要用父节点的takeChild删除节点
-	//	delete ui.KitstreeWidget->currentItem()->parent()->takeChild(ui.KitstreeWidget->currentIndex().row());
-	//}
 	QTreeWidgetItem* curItem = ui.KitstreeWidget->currentItem();
 	curItem->~QTreeWidgetItem();
 }
@@ -205,8 +181,6 @@ void QtTBroShop::loadkitsconfig()
 	if (loadjson["Kits"].empty())
 		return;
 	ui.DefaultKit->setText(QString::fromStdString(loadjson["General"]["DefaultKit"]));
-	const bool KitsShowWithoutPermission = loadjson["General"].value("KitsShowWithoutPermission",false);
-	ui.KitsShowWithoutPermission->setChecked(KitsShowWithoutPermission);
 	const int kitnum = ui.KitstreeWidget->topLevelItemCount();
 	for (int i = 0; i < kitnum; i++)
 		ui.KitstreeWidget->takeTopLevelItem(0);
@@ -236,7 +210,7 @@ void QtTBroShop::loadkitsconfig()
 			gudingshuxing = item.value("Fixed", loadjson["General"].value("Fixed", gudingshuxing));
 
 
-			kititems->addChild(CreateKitsItems("Items",QString::number(amount),QString::number(quality),blueprint, force_blueprint, gudingshuxing));
+			kititems->addChild(CreateKitsItems("Items",QString::number(amount),QString::number(quality),blueprint, force_blueprint, force_blueprint));
 		}
 
 		auto dinos_map = iter_value.value("Dinos", nlohmann::json::array());
@@ -254,11 +228,6 @@ void QtTBroShop::loadkitsconfig()
 			kititems->addChild(CreateKitsDinos("Dinos", "", QString::number(level), blueprint, healthbase, neutered));
 		}
 
-		const int points_map = iter_value.value("Points", 0);
-		if (points_map > 0)
-		{
-			kititems->addChild(CreateKitsItems("Points", QString::number(points_map), "", "", false,false));
-		}
 	}
 }
 
@@ -267,7 +236,6 @@ void QtTBroShop::loadkitsconfig()
 void QtTBroShop::savekitsconfig()
 {
 	savejson["General"]["DefaultKit"] = ui.DefaultKit->toPlainText().toStdString();
-	savejson["General"]["KitsShowWithoutPermission"] = ui.KitsShowWithoutPermission->isChecked();
 	int kitnum=ui.KitstreeWidget->topLevelItemCount();
 	for (int i = 0; i < kitnum; i++)
 	{
@@ -307,29 +275,15 @@ void QtTBroShop::savekitsconfig()
 				savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["Amount"] = kititem->text(1).toInt();
 				savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["Quality"] = kititem->text(2).toDouble();
 				savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["Blueprint"] = getblu(kititem->text(3).toStdString());
-				if (kititem->checkState(4) == Qt::CheckState::Checked)
+				if (kititem->checkState(5) == Qt::CheckState::Checked)
 				{
 					savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["ForceBlueprint"] = true;
 				}
-				else if (kititem->checkState(4) == Qt::CheckState::Unchecked)
+				else if (kititem->checkState(5) == Qt::CheckState::Unchecked)
 				{
 					savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["ForceBlueprint"] = false;
 				}
-				if (kititem->checkState(5) == Qt::CheckState::Checked)
-				{
-					savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["Fixed"] = true;
-				}
-				else if(kititem->checkState(5) == Qt::CheckState::Unchecked)
-				{
-					savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()][it]["Fixed"] = false;
-				}
 				it++;
-			}
-
-
-			if (kititem->text(0) == "Points")
-			{
-				savejson["Kits"][kitid.toStdString()][kititem->text(0).toStdString()] = kititem->text(1).toInt();
 			}
 		}
 

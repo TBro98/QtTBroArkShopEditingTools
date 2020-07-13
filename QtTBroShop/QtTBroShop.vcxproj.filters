@@ -40,25 +40,10 @@
     <ClCompile Include="Shop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vipShop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kami.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Suicide.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="yjsd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lottery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sell.cpp">
@@ -67,26 +52,14 @@
     <ClCompile Include="Servers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Invitation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TBroCrossChat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtTBroShop.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="yjsd.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="QtTBroShop.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="yjsd.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -104,6 +77,8 @@
     <ResourceCompile Include="TBroShopTool.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="TBro.ico" />
+    <Image Include="TBro.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
