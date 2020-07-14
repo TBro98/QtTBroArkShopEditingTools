@@ -65,8 +65,6 @@ void QtTBroShop::loadgeneralconfig()
 	for (auto group_iter = groups.begin(); group_iter != groups.end(); ++group_iter)
 	{
 		const int Amount = group_iter.value().value("Amount",10);
-		const int Add = group_iter.value().value("Add", 5);
-		const int Sale = group_iter.value().value("Sale", 100);
 		addgroup(QString::fromStdString(group_iter.key()),Amount);
 	}
 }
@@ -80,11 +78,8 @@ void QtTBroShop::savegeneralconfig()
 	mysql["MysqlUser"] = "apitest";
 	mysql["MysqlPass"] = "12345";
 	mysql["MysqlDB"] = "apitest"; 
-	auto vipShop_map = loadjson["vipShopItems"];
-	if (vipShop_map.empty())
-		savejson["Mysql"] = mysql;
-	else
-		savejson["Mysql"] = loadjson["Mysql"];
+	auto Mysql_map = loadjson.value("Mysql", mysql);
+	savejson["Mysql"] = Mysql_map;
 	savejson["General"]["ItemsPerPage"]= ui.ItemsPerPage->value();
 	savejson["General"]["ShopDisplayTime"] = ui.ShopDisplayTime->value();
 	savejson["General"]["ShopTextSize"] = ui.ShopTextSize->value();
@@ -95,10 +90,6 @@ void QtTBroShop::savegeneralconfig()
 	{
 		QString vip = ui.GeneraltableWidget->item(i, 0)->text();
 		QSpinBox* Amount=(QSpinBox*)ui.GeneraltableWidget->cellWidget(i,1);
-		QSpinBox* Add = (QSpinBox*)ui.GeneraltableWidget->cellWidget(i, 2);
-		QSpinBox* Sale = (QSpinBox*)ui.GeneraltableWidget->cellWidget(i, 3);
 		savejson["General"]["TimedPointsReward"]["Groups"][vip.toStdString()]["Amount"]= Amount->value();
-		savejson["General"]["TimedPointsReward"]["Groups"][vip.toStdString()]["Add"]=Add->value();
-		savejson["General"]["TimedPointsReward"]["Groups"][vip.toStdString()]["Sale"]= Sale->value();
 	}
 }

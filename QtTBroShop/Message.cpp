@@ -1,4 +1,5 @@
 #include "QtTBroShop.h"
+#include <QPlainTextEdit>
 QString messagelist[] = { 
         "Sender",
         "BoughtItem",
@@ -60,17 +61,28 @@ void QtTBroShop::Messagedef()
 {
     for (int i = 0; i < ui.Messages->rowCount(); i++)
     {
+        ui.Messages->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         QTableWidgetItem* Messagesitem = new QTableWidgetItem();
         Messagesitem->setText(messagelist[i]);
         ui.Messages->setItem(i, 0, Messagesitem);
 
+        QPlainTextEdit* pEdit = new QPlainTextEdit();
+        std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString(), messagelist[i].toStdString());
+        pEdit->setPlainText(QString::fromStdString(messageliststr));
+        pEdit->setFixedHeight(pEdit->blockCount() * 30-(pEdit->blockCount()-1)*10);
+        ui.Messages->setCellWidget(i, 1, pEdit);
+
+        //pEdit->hei();
+       
+        /*
         QTableWidgetItem* Messagesitem1 = new QTableWidgetItem();
         Messagesitem1->setText(QString::fromStdString(loadjson["Messages"].value(messagelist[i].toStdString(), messagelist[i].toStdString())));
         ui.Messages->setItem(i, 1, Messagesitem1);
         //ui.Messages->item(i, 0)->setText(messagelist[i]);
         //std::string list = messagelist[i].toStdString();
         //ui.Messages->item(i, 1)->setText(QString::fromStdString(loadjson["Messages"].value(list,list)));
-        std::string messageliststr = ui.Messages->item(i, 1)->text().toStdString();
+        
+        */
         
         if (messageliststr.find("</>") != -1)
         {
@@ -93,12 +105,16 @@ void QtTBroShop::loadMessageconfig()
 {
     for (int i = 0; i < 36; i++)
     {
-        std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString().c_str(), ui.Messages->item(i, 1)->text().toStdString().c_str());
-        while (messageliststr.find("\n")!=-1)
+        QWidget* widget = ui.Messages->cellWidget(i, 1);
+        QPlainTextEdit* PlainTextEdit = (QPlainTextEdit*)widget;
+        std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString().c_str(), PlainTextEdit->toPlainText().toStdString().c_str());
+        /*while (messageliststr.find("\n")!=-1)
         {
             messageliststr = messageliststr.replace(messageliststr.find("\n"), 1, "\\n");
-        }
-        ui.Messages->item(i, 1)->setText(QString::fromStdString(messageliststr));
+        }*/
+        PlainTextEdit->setPlainText(QString::fromStdString(messageliststr));
+        PlainTextEdit->setFixedHeight(PlainTextEdit->blockCount() * 30 - (PlainTextEdit->blockCount() - 1) * 10);
+        ui.Messages->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         ui.Messages->item(i, 0)->setBackgroundColor(QColor(255, 255, 255));
         if(messageliststr.find("</>") != -1)
         {
@@ -119,17 +135,19 @@ void QtTBroShop::loadMessageconfig()
 }
 void QtTBroShop::saveMessageconfig()
 {
-
-    if (ui.Messages->item(0, 1)->text() == "arkfgf")
-        ui.Messages->item(0, 1)->setText("arkfgf.com");
+    QWidget* widget = ui.Messages->cellWidget(0, 1);
+    QPlainTextEdit* PlainTextEdit = (QPlainTextEdit*)widget;
+    //QPlainTextEdit* PlainTextEdit = (QPlainTextEdit*)(ui.Messages->cellWidget(0, 1));
+    if (PlainTextEdit->toPlainText() == "arkfgf")
+        PlainTextEdit->setPlainText("arkfgf.com");
     for (int i = 0; i < 36; i++)
     {
-        std::string messageliststr = ui.Messages->item(i, 1)->text().toStdString();
-        while (messageliststr.find("\\n") != -1)
+        QPlainTextEdit* PlainTextEdit = (QPlainTextEdit*)(ui.Messages->cellWidget(i, 1));
+        std::string messageliststr = PlainTextEdit->toPlainText().toStdString();
+        //while (messageliststr.find("\\n") != -1)
         {
-            messageliststr = messageliststr.replace(messageliststr.find("\\n"), 2, "\n");
+        //    messageliststr = messageliststr.replace(messageliststr.find("\\n"), 2, "\n");
         }
         savejson["Messages"][messagelist[i].toStdString().c_str()] = messageliststr;
     }
-
 }

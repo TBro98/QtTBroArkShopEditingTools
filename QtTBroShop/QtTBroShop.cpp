@@ -188,6 +188,7 @@ void QtTBroShop::openfile()
 
 void QtTBroShop::savefile()
 {
+	
 	QPalette pe;
 	pe.setColor(QPalette::WindowText, Qt::red);
 	ui.filelabel->setPalette(pe);
