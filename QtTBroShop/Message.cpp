@@ -67,12 +67,17 @@ void QtTBroShop::Messagedef()
         ui.Messages->setItem(i, 0, Messagesitem);
 
         QPlainTextEdit* pEdit = new QPlainTextEdit();
+        ui.Messages->setCellWidget(i, 1, pEdit);
+        //pEdit->setFixedHeight(pEdit->blockCount() * 30 - (pEdit->blockCount() - 1) * 10);
+        //if (loadjson["Messages"].is_null())
+        //    continue;
+        if (loadjson["Messages"].is_null())
+            loadjson["Messages"] = nlohmann::json::object();
         std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString(), messagelist[i].toStdString());
+        //std::string messageliststr = loadjson.value("Messages", MessagesJson).value(messagelist[i].toStdString(), messagelist[i].toStdString());
         pEdit->setPlainText(QString::fromStdString(messageliststr));
         pEdit->setFixedHeight(pEdit->blockCount() * 30-(pEdit->blockCount()-1)*10);
-        ui.Messages->setCellWidget(i, 1, pEdit);
 
-        //pEdit->hei();
        
         /*
         QTableWidgetItem* Messagesitem1 = new QTableWidgetItem();
@@ -107,7 +112,9 @@ void QtTBroShop::loadMessageconfig()
     {
         QWidget* widget = ui.Messages->cellWidget(i, 1);
         QPlainTextEdit* PlainTextEdit = (QPlainTextEdit*)widget;
-        std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString().c_str(), PlainTextEdit->toPlainText().toStdString().c_str());
+        if (loadjson["Messages"].is_null())
+            loadjson["Messages"] = nlohmann::json::object();
+        std::string messageliststr = loadjson["Messages"].value(messagelist[i].toStdString(), PlainTextEdit->toPlainText().toStdString());
         /*while (messageliststr.find("\n")!=-1)
         {
             messageliststr = messageliststr.replace(messageliststr.find("\n"), 1, "\\n");

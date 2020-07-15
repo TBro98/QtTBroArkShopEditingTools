@@ -20,7 +20,9 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 	Shopdef();
 	selldef();
 	SaveiniLoad();
+	Messagedef();
 	Serversdef();
+	loadjson.clear();
 
 	connect(ui.openbutton, &QPushButton::clicked, this, &QtTBroShop::openfile);
 	connect(ui.savebutton, &QPushButton::clicked, this, &QtTBroShop::savefile);
@@ -38,13 +40,12 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 
 void QtTBroShop::LoadJson(QString filepath)
 {
+	//loadjson["Messages"] = nlohmann::json::object();
 	std::wstring jsonpath = filepath.toStdWString();
 	std::fstream jsonfile{ jsonpath };
 	if (jsonfile.is_open())
 	{
 		jsonfile >> loadjson;
-
-		Messagedef();
 	}
 	jsonfile.close();
 }

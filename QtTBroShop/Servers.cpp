@@ -112,14 +112,22 @@ void QtTBroShop::addnewserver(QString path, QString mapname, QString rconport)
 }
 void QtTBroShop::saveall()
 {
-	Permissionjson["DbPathOverride"] = ui.PermissionDbPathOverride->toPlainText().toStdString();
-	std::string Permissionsavestr = Permissionjson.dump(4);
-	//savegeneralconfig();
-	//savekitsconfig();
-	//saveShopconfig();
-	//saveCommandconfig();
-	//saveMessageconfig();
-	//saveSellconfig();
+	Permissionsjson["DbPathOverride"] = ui.PermissionsDbPathOverride->toPlainText().toStdString();
+	Permissionsjson["Database"] = ui.Database->currentText().toStdString();
+	Permissionsjson["MysqlDB"] = ui.PermissionsMysqlDB->toPlainText().toStdString();
+	Permissionsjson["MysqlHost"] = ui.PermissionsMysqlHost->toPlainText().toStdString();
+	Permissionsjson["MysqlPass"] = ui.PermissionsMysqlPass->toPlainText().toStdString();
+	Permissionsjson["MysqlUser"] = ui.PermissionsMysqlUser->toPlainText().toStdString();
+	Permissionsjson["MysqlPort"] = ui.PermissionsMysqlPort->value();
+	Permissionsjson["Database"]=ui.Database->currentText().toStdString();
+
+	std::string Permissionsavestr = Permissionsjson.dump(4);
+	savegeneralconfig();
+	savekitsconfig();
+	saveShopconfig();
+	saveCommandconfig();
+	saveMessageconfig();
+	saveSellconfig();
 	saveini();
 
 	int iRow = ui.serverstableWidget->rowCount();
@@ -174,6 +182,13 @@ void QtTBroShop::removeserver()
 void QtTBroShop::openserverconfig()
 {
 	saveini();
+	ui.PermissionsDbPathOverride->setEnabled(false);
+	ui.PermissionsMysqlHost->setEnabled(false);
+	ui.PermissionsMysqlUser->setEnabled(false);
+	ui.PermissionsMysqlPass->setEnabled(false);
+	ui.PermissionsMysqlDB->setEnabled(false);
+	ui.PermissionsMysqlPort->setEnabled(false);
+	ui.Database->setEnabled(false);
 	if (ui.serverstableWidget->rowCount() > 0)
 	{
 		if (ui.serverstableWidget->item(0, 0)->text().isEmpty())
@@ -183,12 +198,31 @@ void QtTBroShop::openserverconfig()
 		std::fstream Permissionfile{ Permissionpath };
 		if (Permissionfile.is_open())
 		{
-			Permissionfile >> Permissionjson;
-			ui.PermissionDbPathOverride->setText(QString::fromStdString(Permissionjson["DbPathOverride"]));
+			Permissionfile >> Permissionsjson;
+
+			ui.PermissionsDbPathOverride->setEnabled(true);
+			ui.PermissionsMysqlHost->setEnabled(true);
+			ui.PermissionsMysqlUser->setEnabled(true);
+			ui.PermissionsMysqlPass->setEnabled(true);
+			ui.PermissionsMysqlDB->setEnabled(true);
+			ui.PermissionsMysqlPort->setEnabled(true);
+			ui.Database->setEnabled(true);
+
+			if(Permissionsjson["Database"]=="sqlite")
+				ui.Database->setCurrentIndex(0);
+			else if (Permissionsjson["Database"] == "mysql")
+				ui.Database->setCurrentIndex(1);
+			ui.PermissionsDbPathOverride->setText(QString::fromStdString(Permissionsjson["DbPathOverride"]));
+			ui.PermissionsMysqlHost->setText(QString::fromStdString(Permissionsjson["MysqlHost"]));
+			ui.PermissionsMysqlUser->setText(QString::fromStdString(Permissionsjson["MysqlUser"]));
+			ui.PermissionsMysqlPass->setText(QString::fromStdString(Permissionsjson["MysqlPass"]));
+			ui.PermissionsMysqlDB->setText(QString::fromStdString(Permissionsjson["MysqlDB"]));
+			ui.PermissionsMysqlPort->setValue(Permissionsjson["MysqlPort"]);
 		}
 		else
 		{
 			ui.filelabel->setText("Failed to open Permissions config.json in directory!");
+
 			Permissionfile.close();
 			return;
 		}

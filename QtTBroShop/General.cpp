@@ -50,6 +50,11 @@ void QtTBroShop::loadgeneralconfig()
 	const float ShopTextSize = loadjson["General"].value("ShopTextSize", 1.3);
 	ui.ShopTextSize->setValue(ShopTextSize);
 
+	ui.UseMysql->setChecked(loadjson["Mysql"].value("UseMysql", false));
+	ui.ArkShopMysqlHost->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlHost", "localhost")));
+	ui.ArkShopMysqlUser->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlUser", "MysqlUser")));
+	ui.ArkShopMysqlPass->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlPass", "MysqlPass")));
+	ui.ArkShopMysqlDB->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlDB", "MysqlDB")));
 
 	const QString DbPathOverride = QString::fromStdString(loadjson["General"].value("DbPathOverride", ""));
 	ui.DbPathOverride->setText(DbPathOverride);
@@ -72,14 +77,12 @@ void QtTBroShop::loadgeneralconfig()
 
 void QtTBroShop::savegeneralconfig()
 {
-	nlohmann::json mysql;
-	mysql["UseMysql"] = false;
-	mysql["MysqlHost"] = "localhost";
-	mysql["MysqlUser"] = "apitest";
-	mysql["MysqlPass"] = "12345";
-	mysql["MysqlDB"] = "apitest"; 
-	auto Mysql_map = loadjson.value("Mysql", mysql);
-	savejson["Mysql"] = Mysql_map;
+	savejson["Mysql"]["UseMysql"] = ui.UseMysql->isChecked();
+	savejson["Mysql"]["MysqlHost"] =ui.ArkShopMysqlHost->toPlainText().toStdString();
+	savejson["Mysql"]["MysqlUser"] = ui.ArkShopMysqlUser->toPlainText().toStdString();
+	savejson["Mysql"]["MysqlPass"] = ui.ArkShopMysqlPass->toPlainText().toStdString();
+	savejson["Mysql"]["MysqlDB"] = ui.ArkShopMysqlDB->toPlainText().toStdString();
+
 	savejson["General"]["ItemsPerPage"]= ui.ItemsPerPage->value();
 	savejson["General"]["ShopDisplayTime"] = ui.ShopDisplayTime->value();
 	savejson["General"]["ShopTextSize"] = ui.ShopTextSize->value();

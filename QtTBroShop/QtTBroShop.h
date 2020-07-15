@@ -70,7 +70,7 @@ private:
 	//General
 
 	nlohmann::json loadjson;
-	nlohmann::json Permissionjson;
+	nlohmann::json Permissionsjson;
 	nlohmann::json savejson;
 	nlohmann::json saveiniload;
 	//Kits
