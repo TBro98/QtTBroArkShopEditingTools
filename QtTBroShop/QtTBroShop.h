@@ -89,6 +89,7 @@ private:
 
 	void Serversdef();
 	void saveini();
+	void chooseconfigfile();
 	void LoadJson(QString filepath);
 	void SaveiniLoad();
 	QString read_ip_address();
@@ -100,7 +101,7 @@ private:
 	void openserverconfig();
 	void clearfilelabel();
 	//file
-	void openfile();
+	void openfile(QString filepath);
 	void savefile();
 	void loadgeneralconfig();
 	void savegeneralconfig();

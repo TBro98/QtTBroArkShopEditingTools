@@ -182,6 +182,7 @@ void QtTBroShop::removeserver()
 void QtTBroShop::openserverconfig()
 {
 	saveini();
+	//close Permissions setting
 	ui.PermissionsDbPathOverride->setEnabled(false);
 	ui.PermissionsMysqlHost->setEnabled(false);
 	ui.PermissionsMysqlUser->setEnabled(false);
@@ -189,10 +190,14 @@ void QtTBroShop::openserverconfig()
 	ui.PermissionsMysqlDB->setEnabled(false);
 	ui.PermissionsMysqlPort->setEnabled(false);
 	ui.Database->setEnabled(false);
+
 	if (ui.serverstableWidget->rowCount() > 0)
 	{
 		if (ui.serverstableWidget->item(0, 0)->text().isEmpty())
 			return;
+		/*
+		//open Permissions config.json
+		*/
 		QString Permissionfilepath = ui.serverstableWidget->item(0, 0)->text() + "/ShooterGame/Binaries/Win64/ArkApi/Plugins/Permissions/config.json";
 		std::wstring Permissionpath = Permissionfilepath.toStdWString();
 		std::fstream Permissionfile{ Permissionpath };
@@ -228,34 +233,11 @@ void QtTBroShop::openserverconfig()
 		}
 		Permissionfile.close();
 
+		/*
+		//open ArkShop config.json
+		*/
 		QString filepath = ui.serverstableWidget->item(0, 0)->text() + "/ShooterGame/Binaries/Win64/ArkApi/Plugins/ArkShop/config.json";
-		std::wstring path = filepath.toStdWString();
-		std::fstream file{ path };
-		if (file.is_open())
-		{
-			file >> loadjson;
-			ui.filelabel->setText(QString::fromLocal8Bit("Open Success!"));
-			try
-			{
-				loadgeneralconfig();
-				loadkitsconfig();
-				loadShopconfig();
-				loadCommandconfig();
-				loadMessageconfig();
-				loadSellItem();
-			}
-			catch (const std::exception & error)
-			{
-				QMessageBox::information(NULL, "Error", error.what());
-			}
-		}
-		else
-		{
-			ui.filelabel->setText("Failed to open ArkShop config.json in directory!");
-			file.close();
-			return;
-		}
-		file.close();
+		openfile(filepath);
 	}
 	else
 	{

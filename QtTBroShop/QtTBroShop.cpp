@@ -6,6 +6,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QNetworkInterface>
+
 //#include <QTime>
 QtTBroShop::QtTBroShop(QWidget *parent)
 	: QWidget(parent)
@@ -24,7 +25,7 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 	Serversdef();
 	loadjson.clear();
 
-	connect(ui.openbutton, &QPushButton::clicked, this, &QtTBroShop::openfile);
+	connect(ui.openbutton, &QPushButton::clicked, this, &QtTBroShop::chooseconfigfile);
 	connect(ui.savebutton, &QPushButton::clicked, this, &QtTBroShop::savefile);
 
 	connect(ui.tabWidget, &QTabWidget::tabBarClicked, this, &QtTBroShop::clearfilelabel);
@@ -36,6 +37,38 @@ QtTBroShop::QtTBroShop(QWidget *parent)
 	connect(ui.saveall, &QPushButton::clicked, this, &QtTBroShop::saveall);
 
 
+}
+
+
+void QtTBroShop::chooseconfigfile()
+{
+
+	QPalette pe;
+	pe.setColor(QPalette::WindowText, Qt::red);
+	ui.filelabel->setPalette(pe);
+	//定义文件对话框类
+	QFileDialog* fileDialog = new QFileDialog(this);
+	//定义文件对话框标题
+	fileDialog->setWindowTitle(QStringLiteral("Choose ArkShop config.json"));
+	//设置默认文件路径
+	fileDialog->setDirectory(".");
+	//设置文件过滤器
+	fileDialog->setNameFilter(tr("File(*.*)"));
+	//设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
+	fileDialog->setFileMode(QFileDialog::ExistingFiles);
+	//设置视图模式
+	fileDialog->setViewMode(QFileDialog::Detail);
+	//打印所有选择的文件的路径
+	QStringList fileNames;
+	if (fileDialog->exec()) {
+		fileNames = fileDialog->selectedFiles();
+	}
+	else
+		return;
+	//QString filepath = QDir::currentPath() + "/config.json";
+	QString filepath = fileNames.first();
+	ui.SavePath->setText(filepath);
+	openfile(filepath);
 }
 
 void QtTBroShop::LoadJson(QString filepath)
@@ -111,37 +144,13 @@ void QtTBroShop::clearfilelabel()
 {
 	ui.filelabel->clear();
 }
-void QtTBroShop::openfile()
+
+void QtTBroShop::openfile(QString filepath)
 {
-	QPalette pe;
-	pe.setColor(QPalette::WindowText, Qt::red);
-	ui.filelabel->setPalette(pe);
-	//定义文件对话框类
-	QFileDialog* fileDialog = new QFileDialog(this);
-	//定义文件对话框标题
-	fileDialog->setWindowTitle(QStringLiteral("Choose config.json"));
-	//设置默认文件路径
-	fileDialog->setDirectory(".");
-	//设置文件过滤器
-	fileDialog->setNameFilter(tr("File(*.*)"));
-	//设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
-	fileDialog->setFileMode(QFileDialog::ExistingFiles);
-	//设置视图模式
-	fileDialog->setViewMode(QFileDialog::Detail);
-	//打印所有选择的文件的路径
-	QStringList fileNames;
-	if (fileDialog->exec()) {
-		fileNames = fileDialog->selectedFiles();
-	}
-	else
-		return;
-	//QString filepath = QDir::currentPath() + "/config.json";
-	QString filepath = fileNames.first();
 	std::wstring path = filepath.toStdWString();
 	std::fstream file{ path };
 	if (file.is_open())
 	{
-		ui.SavePath->setText(filepath);
 		try
 		{
 			file >> loadjson;
