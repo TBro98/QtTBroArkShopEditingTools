@@ -186,7 +186,7 @@ void QtTBroShop::openfile(QString filepath)
 		errorwhere = "Sell";
 		loadSellItem();
 	}
-	catch (const std::exception & error)
+	catch (std::exception & error)
 	{
 		ui.filelabel->setText("!!Open Failed!!");
 		std::string errorstr = "Warn from:" + errorwhere;

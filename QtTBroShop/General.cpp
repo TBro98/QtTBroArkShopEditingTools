@@ -50,11 +50,12 @@ void QtTBroShop::loadgeneralconfig()
 	const float ShopTextSize = loadjson["General"].value("ShopTextSize", 1.3);
 	ui.ShopTextSize->setValue(ShopTextSize);
 
-	ui.UseMysql->setChecked(loadjson["Mysql"].value("UseMysql", false));
-	ui.ArkShopMysqlHost->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlHost", "localhost")));
-	ui.ArkShopMysqlUser->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlUser", "MysqlUser")));
-	ui.ArkShopMysqlPass->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlPass", "MysqlPass")));
-	ui.ArkShopMysqlDB->setText(QString::fromStdString(loadjson["Mysql"].value("MysqlDB", "MysqlDB")));
+	nlohmann::json mysqljson = loadjson.value("Mysql",nlohmann::json::object());
+	ui.UseMysql->setChecked(mysqljson.value("UseMysql", false));
+	ui.ArkShopMysqlHost->setText(QString::fromStdString(mysqljson.value("MysqlHost", "localhost")));
+	ui.ArkShopMysqlUser->setText(QString::fromStdString(mysqljson.value("MysqlUser", "MysqlUser")));
+	ui.ArkShopMysqlPass->setText(QString::fromStdString(mysqljson.value("MysqlPass", "MysqlPass")));
+	ui.ArkShopMysqlDB->setText(QString::fromStdString(mysqljson.value("MysqlDB", "MysqlDB")));
 
 	const QString DbPathOverride = QString::fromStdString(loadjson["General"].value("DbPathOverride", ""));
 	ui.DbPathOverride->setText(DbPathOverride);

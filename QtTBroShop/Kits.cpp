@@ -206,8 +206,6 @@ void QtTBroShop::loadkitsconfig()
 			const float quality = item["Quality"];
 			const bool force_blueprint = item["ForceBlueprint"];
 			QString blueprint = QString::fromStdString(item["Blueprint"]);
-			bool gudingshuxing = item.value("isfix", loadjson["General"].value("isfix", true));
-			gudingshuxing = item.value("Fixed", loadjson["General"].value("Fixed", gudingshuxing));
 
 
 			kititems->addChild(CreateKitsItems("Items",QString::number(amount),QString::number(quality),blueprint, force_blueprint, force_blueprint));
